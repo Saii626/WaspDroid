@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WaspDroid</string>
+    <string name="channel_name">Default Channel</string>
+    <string name="channel_description">Default Channel</string>
 </resources>
