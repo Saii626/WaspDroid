@@ -19,34 +19,33 @@ import java.util.Map;
 public class NotificationService extends NotificationListenerService {
 
     private static String TAG = NotificationService.class.getSimpleName();
-    private Context context = null;
+    private RequestQueue queue;
 
     @Override
     public void onNotificationPosted(StatusBarNotification notification) {
         String pack = notification.getPackageName();
-        String ticker ="";
-        if(notification.getNotification().tickerText !=null) {
-            ticker = notification.getNotification().tickerText.toString();
-        }
+        pack = pack==null?"<<Package>>":pack;
+//        String ticker ="";
+//        if(notification.getNotification().tickerText !=null) {
+//            ticker = notification.getNotification().tickerText.toString();
+//        }
         Bundle extras = notification.getNotification().extras;
         String title = extras.getString("android.title");
+        title = title==null?"<<Title>>":title;
         CharSequence charSequence = extras.getCharSequence("android.text");
-        String text = charSequence!=null?charSequence.toString():"No text";
-//        int id1 = extras.getInt(Notification.EXTRA_SMALL_ICON);
-//        Bitmap id = sbn.getNotification().largeIcon;
+        String text = charSequence!=null?charSequence.toString():"<<Body>>";
 
 
         sendNotificationToServer(title, text, pack, URLs.POST_FIREFOX);
         sendNotificationToServer(title, text, pack, URLs.POST_THINKPAD);
         sendNotificationToServer(title, text, pack, URLs.POST_WORK);
-        Log.i(TAG,pack);
-        Log.i(TAG,ticker);
-        Log.i(TAG,title);
-        Log.i(TAG,text);
+//        Log.i(TAG,pack);
+//        Log.i(TAG,ticker);
+//        Log.i(TAG,title);
+//        Log.i(TAG,text);
     }
 
     private void sendNotificationToServer(final String title, final String text, final String pack, String url) {
-        RequestQueue queue = Volley.newRequestQueue(this);
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -86,6 +85,6 @@ public class NotificationService extends NotificationListenerService {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.context = this;
+        queue = Volley.newRequestQueue(this);
     }
 }
