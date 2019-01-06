@@ -1,6 +1,7 @@
 package app.saikat.waspdroid;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
@@ -24,7 +25,14 @@ public class NotificationService extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification notification) {
         String pack = notification.getPackageName();
-        pack = pack==null?"<<Package>>":pack;
+        if (pack!=null) {
+            PackageManager packageManager = getApplicationContext().getPackageManager();
+            try {
+                pack = (String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(pack, PackageManager.GET_META_DATA));
+            } catch (PackageManager.NameNotFoundException ignored) { }
+        } else {
+            pack = "<<Package>>";
+        }
 //        String ticker ="";
 //        if(notification.getNotification().tickerText !=null) {
 //            ticker = notification.getNotification().tickerText.toString();
