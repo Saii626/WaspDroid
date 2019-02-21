@@ -1,4 +1,4 @@
-package app.saikat.waspdroid;
+package app.saikat.waspdroid.Services;
 
 import android.util.Log;
 
@@ -12,6 +12,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import app.saikat.waspdroid.NetworkLayer.URLs;
 
 public class FirebaseService extends FirebaseMessagingService {
 
@@ -28,7 +30,7 @@ public class FirebaseService extends FirebaseMessagingService {
     private void sendTokenToServer(final String token) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest request = new StringRequest(Request.Method.POST, URLs.POST_TOKEN, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, URLs.REGISTER_DEVICE, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse: Success " + response);

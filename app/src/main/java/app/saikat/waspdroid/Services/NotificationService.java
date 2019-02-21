@@ -1,6 +1,5 @@
-package app.saikat.waspdroid;
+package app.saikat.waspdroid.Services;
 
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
@@ -16,6 +15,8 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import app.saikat.waspdroid.NetworkLayer.URLs;
 
 public class NotificationService extends NotificationListenerService {
 
@@ -71,10 +72,9 @@ public class NotificationService extends NotificationListenerService {
             protected Map<String, String> getParams () {
                 Map<String, String> params = new HashMap<>();
 
-                String t = title+" ("+pack+")";
-
-                params.put("title", t);
+                params.put("title", title);
                 params.put("body", text);
+                params.put("source", pack);
 
                 return params;
             }
