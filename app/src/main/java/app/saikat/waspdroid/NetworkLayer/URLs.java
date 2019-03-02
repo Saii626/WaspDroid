@@ -1,23 +1,43 @@
 package app.saikat.waspdroid.NetworkLayer;
 
-public final class URLs {
+import app.saikat.waspdroid.Models.LoginResponse;
+import app.saikat.waspdroid.Models.NotifyDeviceResponse;
+import app.saikat.waspdroid.Models.NotifyRegisterResponse;
 
-    private URLs() {}
+public enum URLs {
 
-    static String BASE_URL = "https://saikat.app";
-//    static String BASE_URL = "http://192.168.100.3";
+    //login
+    LOGIN("/login", LoginResponse.class),
 
-    public static String REGISTER_DEVICE = BASE_URL + "/notify/register";
 
-    public static String POST_THINKPAD = BASE_URL + "/notify/thinkpad";
-    public static String POST_FIREFOX = BASE_URL + "/notify/firefox";
-    public static String POST_WORK = BASE_URL + "/notify/workLaptop";
+    // notify
+    REGISTER_DEVICE("/notify/register", NotifyRegisterResponse.class),
+    POST_THINKPAD("/notify/thinkpad", NotifyDeviceResponse.class),
+    POST_FIREFOX("/notify/firefox", NotifyDeviceResponse.class),
+    POST_WORK("/notify/workLaptop", NotifyRegisterResponse.class);
 
-    public static String getUrlAppendedToBase(String path) {
-        if (path.charAt(0) == '/') {
-            return BASE_URL + path;
-        }else {
-            return BASE_URL + '/' + path;
-        }
+    private final String url;
+    private final Class responseClass;
+    private static BASE_URLs base_url = BASE_URLs.REMOTE_URL;
+
+    URLs(String url, Class response) {
+        this.url = url;
+        this.responseClass = response;
+    }
+
+    public static void changeBaseUrl(BASE_URLs newBaseUrl) {
+        URLs.base_url = newBaseUrl;
+    }
+
+    public static BASE_URLs getBase_url() {
+        return URLs.base_url;
+    }
+
+    public String getUrl() {
+        return base_url.getUrl().concat(url);
+    }
+
+    public Class getResponseClass() {
+        return responseClass;
     }
 }

@@ -5,4 +5,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="remote">Remote</string>
+    <string name="local">Local</string>
+    <string name="register_as">Register As</string>
+    <string name="register">Register</string>
+    <string name="notification_title">Notification Title</string>
+    <string name="notification_body">Notification Body</string>
+    <string name="send_notification">Send Notification</string>
 </resources>

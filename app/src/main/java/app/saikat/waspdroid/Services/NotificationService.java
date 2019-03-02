@@ -5,23 +5,20 @@ import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+import app.saikat.waspdroid.Models.NotifyDeviceResponse;
+import app.saikat.waspdroid.NetworkLayer.APIRequestHandler;
+import app.saikat.waspdroid.NetworkLayer.OnResponse;
 import app.saikat.waspdroid.NetworkLayer.URLs;
 
 public class NotificationService extends NotificationListenerService {
 
     private static String TAG = NotificationService.class.getSimpleName();
-    private RequestQueue queue;
 
     @Override
     public void onNotificationPosted(StatusBarNotification notification) {
@@ -34,10 +31,7 @@ public class NotificationService extends NotificationListenerService {
         } else {
             pack = "<<Package>>";
         }
-//        String ticker ="";
-//        if(notification.getNotification().tickerText !=null) {
-//            ticker = notification.getNotification().tickerText.toString();
-//        }
+
         Bundle extras = notification.getNotification().extras;
         String title = extras.getString("android.title");
         title = title==null?"<<Title>>":title;
@@ -48,51 +42,26 @@ public class NotificationService extends NotificationListenerService {
         sendNotificationToServer(title, text, pack, URLs.POST_FIREFOX);
         sendNotificationToServer(title, text, pack, URLs.POST_THINKPAD);
         sendNotificationToServer(title, text, pack, URLs.POST_WORK);
-//        Log.i(TAG,pack);
-//        Log.i(TAG,ticker);
-//        Log.i(TAG,title);
-//        Log.i(TAG,text);
     }
 
-    private void sendNotificationToServer(final String title, final String text, final String pack, String url) {
+    private void sendNotificationToServer(final String title, final String text, final String pack, final URLs url ) {
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "onResponse: Success " + response);
+        Map<String, String> formData = new HashMap<>();
 
+        formData.put("title", title);
+        formData.put("body", text);
+        formData.put("source", pack);
+
+        APIRequestHandler.getInstance().request(url, Optional.empty(), Optional.of(formData), (OnResponse<NotifyDeviceResponse>) (statusCode, data) -> {
+
+            if(statusCode == 401 || statusCode == 500) {
+                Log.e(TAG, "Server error");
+            } else {
+//                Log.v(TAG, String.format("Destination: %s,\nResponse: %s", data.destination, data.response));
+                Toast.makeText(getBaseContext(), String.format("Notification send to %s", data.destination), Toast.LENGTH_SHORT).show();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "onErrorResponse: Error" + error.getMessage());
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams () {
-                Map<String, String> params = new HashMap<>();
+        });
 
-                params.put("title", title);
-                params.put("body", text);
-                params.put("source", pack);
 
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                return params;
-            }
-        };
-
-        queue.add(request);
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        queue = Volley.newRequestQueue(this);
     }
 }

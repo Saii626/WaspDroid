@@ -1,15 +1,15 @@
 package app.saikat.waspdroid.Models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 public class LoginResponse {
 
-    @JsonProperty("status")
+    @SerializedName("status")
     public String status;
 
-    @JsonProperty("userId")
+    @SerializedName("userId")
     public String userId;
 
-    @JsonProperty("error")
+    @SerializedName("error")
     public String error;
 }
