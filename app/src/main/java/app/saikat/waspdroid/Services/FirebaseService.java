@@ -4,7 +4,9 @@ import android.content.SharedPreferences;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 
-import app.saikat.waspdroid.SharedPreferancesManager;
+import app.saikat.waspdroid.SharedPreferenceLayer.SharedPreferenceKey;
+import app.saikat.waspdroid.SharedPreferenceLayer.SharedPreferencesManager;
+import app.saikat.waspdroid.Application.WaspdroidApplication;
 
 public class FirebaseService extends FirebaseMessagingService {
 
@@ -15,8 +17,9 @@ public class FirebaseService extends FirebaseMessagingService {
     public void onNewToken(String token) {
         super.onNewToken(token);
 
-        sharedPreferances = SharedPreferancesManager.getSharedPreferences(this.getBaseContext());
-        SharedPreferancesManager.put(sharedPreferances, SharedPreferancesManager.FIREBASE_TOKEN, token);
+//        ((WaspdroidApplication) getApplication()).getSharedPreferencesManager()
+//        sharedPreferances = SharedPreferencesManager.getSharedPreferences(this.getBaseContext());
+//        SharedPreferencesManager.put(sharedPreferances, SharedPreferenceKey.FIREBASE_TOKEN, token);
     }
 }
 

@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import app.saikat.waspdroid.Fragments.BaseFragment;
 import app.saikat.waspdroid.Fragments.FilesTab;
 import app.saikat.waspdroid.Fragments.GPIOTab;
 import app.saikat.waspdroid.Fragments.LoginTab;
@@ -12,12 +13,12 @@ import app.saikat.waspdroid.Fragments.NotifyTab;
 
 public class TabsAdapter extends FragmentStatePagerAdapter {
 
-    Fragment[] fragments;
+    private BaseFragment[] fragments;
 
     public TabsAdapter(FragmentManager fm) {
         super(fm);
 
-        fragments = new Fragment[5];
+        fragments = new BaseFragment[5];
         fragments[0] = new LoginTab();
         fragments[1] = new NotifyTab();
         fragments[2] = new FilesTab();
@@ -26,7 +27,7 @@ public class TabsAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int i) {
+    public BaseFragment getItem(int i) {
        return fragments[i];
     }
 

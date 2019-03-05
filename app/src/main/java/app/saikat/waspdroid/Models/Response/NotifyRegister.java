@@ -1,12 +1,11 @@
-package app.saikat.waspdroid.Models;
+package app.saikat.waspdroid.Models.Response;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
-public class NotifyRegisterResponse {
+public class NotifyRegister {
 
     @SerializedName("id")
     public UUID id;

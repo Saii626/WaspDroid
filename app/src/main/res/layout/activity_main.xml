@@ -7,7 +7,7 @@
     android:id="@+id/layout"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
 
     <!--<android.support.v7.widget.Toolbar-->
         <!--android:layout_width="match_parent"-->

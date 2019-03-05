@@ -20,14 +20,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import app.saikat.waspdroid.Models.NotifyRegisterResponse;
+import app.saikat.waspdroid.Models.Response.NotifyRegister;
 import app.saikat.waspdroid.NetworkLayer.APIRequestHandler;
-import app.saikat.waspdroid.NetworkLayer.OnResponse;
-import app.saikat.waspdroid.NetworkLayer.URLs;
+import app.saikat.waspdroid.NetworkLayer.URL;
 import app.saikat.waspdroid.R;
-import app.saikat.waspdroid.SharedPreferancesManager;
+import app.saikat.waspdroid.SharedPreferenceLayer.SharedPreferenceKey;
+import app.saikat.waspdroid.SharedPreferenceLayer.SharedPreferencesManager;
 
-public class NotifyTab extends Fragment {
+public class NotifyTab extends BaseFragment{
 
     private LinearLayout sendNotification;
     private EditText registerAs, msgTitle, msgBody;
@@ -58,45 +58,59 @@ public class NotifyTab extends Fragment {
 
         devices = view.findViewById(R.id.devices);
 
-        sharedPreferences = SharedPreferancesManager.getSharedPreferences(this.getContext());
+
+//        sharedPreferences = SharedPreferencesManager.getSharedPreferences(this.getContext());
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        if(Objects.isNull(SharedPreferancesManager.get(sharedPreferences, SharedPreferancesManager.USER_ID))) {
-            sendNotification.setVisibility(View.INVISIBLE);
-        } else {
-            sendNotification.setVisibility(View.VISIBLE);
-        }
+//        SharedPreferencesManager.addOnPreferenceChangeListener(sharedPreferences, SharedPreferenceKey.USER_ID, () -> {
+//
+//        });
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v(TAG, SharedPreferancesManager.get(sharedPreferences, SharedPreferancesManager.FIREBASE_TOKEN));
+//        if(Objects.isNull(SharedPreferencesManager.get(sharedPreferences, SharedPreferenceKey.USER_ID))) {
+//            sendNotification.setVisibility(View.INVISIBLE);
+//        } else {
+//            sendNotification.setVisibility(View.VISIBLE);
+//        }
 
-                if (Objects.isNull(SharedPreferancesManager.get(sharedPreferences, SharedPreferancesManager.FIREBASE_TOKEN))) {
-                    return;
-                }
+//        register.setOnClickListener(v -> {
+//            Log.v(TAG, SharedPreferencesManager.get(sharedPreferences, SharedPreferenceKey.FIREBASE_TOKEN));
+//
+//            if (Objects.isNull(SharedPreferencesManager.get(sharedPreferences, SharedPreferenceKey.FIREBASE_TOKEN))) {
+//                return;
+//            }
+//
+//            Map<String, String> form = new HashMap<>();
+//
+//            form.put("source", registerAs.getText().toString());
+//            form.put("token", SharedPreferencesManager.get(sharedPreferences, SharedPreferenceKey.FIREBASE_TOKEN));
+//
+//            Log.v(TAG, form.get("source"));
+//            Log.v(TAG, form.get("token"));
+//
+//            APIRequestHandler.getInstance().request(URL.REGISTER_DEVICE, Optional.empty(), Optional.of(form),
+//                    NotifyRegister.class, (statusCode, resp) -> {
+//
+//                if (statusCode == 500) {
+//                    Log.e(TAG, "500 status code");
+//                } else {
+//                    Toast.makeText(getContext(), "Device registered", Toast.LENGTH_SHORT).show();
+//                    Log.v(TAG, String.format("Device: %s,\nToken: %s", resp.name, resp.token));
+//                }
+//            });
+//        });
+    }
 
-                Map<String, String> form = new HashMap<>();
+    @Override
+    public void fragmentSelected() {
 
-                form.put("source", registerAs.getText().toString());
-                form.put("token", SharedPreferancesManager.get(sharedPreferences, SharedPreferancesManager.FIREBASE_TOKEN));
+    }
 
-                Log.v(TAG, form.get("source"));
-                Log.v(TAG, form.get("token"));
+    @Override
+    public void fragmentUnselected() {
 
-                APIRequestHandler.getInstance().request(URLs.REGISTER_DEVICE, Optional.empty(), Optional.of(form), (OnResponse<NotifyRegisterResponse>) (statusCode, resp) -> {
-                    if (statusCode == 500) {
-                        Log.e(TAG, "500 status code");
-                    } else {
-                        Toast.makeText(getContext(), "Device registered", Toast.LENGTH_SHORT).show();
-                        Log.v(TAG, String.format("Device: %s,\nToken: %s", resp.name, resp.token));
-                    }
-                });
-            }
-        });
     }
 }

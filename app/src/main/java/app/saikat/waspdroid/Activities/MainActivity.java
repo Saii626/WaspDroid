@@ -1,31 +1,25 @@
-package app.saikat.waspdroid;
+package app.saikat.waspdroid.Activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import app.saikat.waspdroid.Adapters.TabsAdapter;
+import app.saikat.waspdroid.R;
+import butterknife.BindView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static String TAG = MainActivity.class.getSimpleName();
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    @BindView(R.id.tab) TabLayout tabLayout;
+    @BindView(R.id.pager) ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-        tabLayout = findViewById(R.id.tab);
-        viewPager = findViewById(R.id.pager);
 
         tabLayout.addTab(tabLayout.newTab().setText("Login"));
         tabLayout.addTab(tabLayout.newTab().setText("Notify"));
@@ -34,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Misc"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        PagerAdapter adapter = new TabsAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
+        TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(tabsAdapter);
 
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
@@ -43,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                viewPager.setCurrentItem(tab.getPosition());
+               tabsAdapter.getItem(tab.getPosition()).fragmentSelected();
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                tabsAdapter.getItem(tab.getPosition()).fragmentUnselected();
             }
 
             @Override
@@ -55,6 +50,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+//        APIRequestHandler.getInstance().request(URL.GET_LOGGED_IN_USER, Optional.empty(), Optional.empty(),
+//                LoginStatus.class, (statusCode, resp) -> {
+//
+//                    if (resp.status.equals("success") && !Objects.isNull(resp.userId)) {
+//                        sharedPreferencesManager.put(SharedPreferenceKey.USER_ID, resp.userId.toString());
+//                    } else {
+//                        sharedPreferencesManager.delete(SharedPreferenceKey.USER_ID);
+//                    }
+//                });
 //
 //        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
 //            @Override

@@ -5,16 +5,14 @@ import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import app.saikat.waspdroid.Models.NotifyDeviceResponse;
+import app.saikat.waspdroid.Models.Response.NotifyDevice;
 import app.saikat.waspdroid.NetworkLayer.APIRequestHandler;
-import app.saikat.waspdroid.NetworkLayer.OnResponse;
-import app.saikat.waspdroid.NetworkLayer.URLs;
+import app.saikat.waspdroid.NetworkLayer.URL;
 
 public class NotificationService extends NotificationListenerService {
 
@@ -39,12 +37,12 @@ public class NotificationService extends NotificationListenerService {
         String text = charSequence!=null?charSequence.toString():"<<Body>>";
 
 
-        sendNotificationToServer(title, text, pack, URLs.POST_FIREFOX);
-        sendNotificationToServer(title, text, pack, URLs.POST_THINKPAD);
-        sendNotificationToServer(title, text, pack, URLs.POST_WORK);
+        sendNotificationToServer(title, text, pack, URL.POST_FIREFOX);
+        sendNotificationToServer(title, text, pack, URL.POST_THINKPAD);
+        sendNotificationToServer(title, text, pack, URL.POST_WORK);
     }
 
-    private void sendNotificationToServer(final String title, final String text, final String pack, final URLs url ) {
+    private void sendNotificationToServer(final String title, final String text, final String pack, final URL url ) {
 
         Map<String, String> formData = new HashMap<>();
 
@@ -52,16 +50,14 @@ public class NotificationService extends NotificationListenerService {
         formData.put("body", text);
         formData.put("source", pack);
 
-        APIRequestHandler.getInstance().request(url, Optional.empty(), Optional.of(formData), (OnResponse<NotifyDeviceResponse>) (statusCode, data) -> {
-
-            if(statusCode == 401 || statusCode == 500) {
-                Log.e(TAG, "Server error");
-            } else {
-//                Log.v(TAG, String.format("Destination: %s,\nResponse: %s", data.destination, data.response));
-                Toast.makeText(getBaseContext(), String.format("Notification send to %s", data.destination), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+//        APIRequestHandler.getInstance().request(url, Optional.empty(), Optional.of(formData),
+//                NotifyDevice.class, (statusCode, data) -> {
+//
+//            if(statusCode == 401 || statusCode == 500) {
+//                Log.e(TAG, "Server error");
+//            } else {
+////                Log.v(TAG, String.format("Destination: %s,\nResponse: %s", data.destination, data.response));
+//            }
+//        });
     }
 }

@@ -1,8 +1,8 @@
-package app.saikat.waspdroid.Models;
+package app.saikat.waspdroid.Models.Response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LoginResponse {
+public class Login {
 
     @SerializedName("status")
     public String status;

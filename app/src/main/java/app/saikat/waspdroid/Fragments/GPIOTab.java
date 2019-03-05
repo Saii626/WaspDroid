@@ -8,9 +8,19 @@ import android.view.ViewGroup;
 
 import app.saikat.waspdroid.R;
 
-public class GPIOTab extends Fragment {
+public class GPIOTab extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle savedInstance) {
         return layoutInflater.inflate(R.layout.gpio_tab, viewGroup, false);
+    }
+
+    @Override
+    public void fragmentSelected() {
+
+    }
+
+    @Override
+    public void fragmentUnselected() {
+
     }
 }
