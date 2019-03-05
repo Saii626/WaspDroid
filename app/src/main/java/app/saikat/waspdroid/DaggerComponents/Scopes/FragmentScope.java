@@ -1,4 +1,4 @@
-package app.saikat.waspdroid.Fragments;
+package app.saikat.waspdroid.DaggerComponents.Scopes;
 
 import javax.inject.Scope;
 

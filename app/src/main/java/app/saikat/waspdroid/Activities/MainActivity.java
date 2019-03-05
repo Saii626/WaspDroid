@@ -1,48 +1,51 @@
 package app.saikat.waspdroid.Activities;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 
-import app.saikat.waspdroid.Adapters.TabsAdapter;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import androidx.viewpager.widget.ViewPager;
+import app.saikat.waspdroid.Adapters.FragmentPageAdapter;
+import app.saikat.waspdroid.Models.Response.LoginStatus;
+import app.saikat.waspdroid.NetworkLayer.URL;
 import app.saikat.waspdroid.R;
+import app.saikat.waspdroid.SharedPreferenceLayer.SharedPreferenceKey;
 import butterknife.BindView;
+import butterknife.BindViews;
 
 public class MainActivity extends BaseActivity {
 
-    private static String TAG = MainActivity.class.getSimpleName();
-
     @BindView(R.id.tab) TabLayout tabLayout;
     @BindView(R.id.pager) ViewPager viewPager;
+
+    @BindViews({R.id.loginTab, R.id.notifyTab, R.id.gpioTab, R.id.filesTab, R.id.miscTab})
+    List<TabItem> tabItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        super.setLayout(R.layout.activity_main);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Login"));
-        tabLayout.addTab(tabLayout.newTab().setText("Notify"));
-        tabLayout.addTab(tabLayout.newTab().setText("Files"));
-        tabLayout.addTab(tabLayout.newTab().setText("GPIO"));
-        tabLayout.addTab(tabLayout.newTab().setText("Misc"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        viewPager.setAdapter(pagerAdapter);
 
-        TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(tabsAdapter);
-
-        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-               viewPager.setCurrentItem(tab.getPosition());
-               tabsAdapter.getItem(tab.getPosition()).fragmentSelected();
+                viewPager.setCurrentItem(tab.getPosition());
+                pagerAdapter.getItem(tab.getPosition()).fragmentSelected();
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tabsAdapter.getItem(tab.getPosition()).fragmentUnselected();
+                pagerAdapter.getItem(tab.getPosition()).fragmentUnselected();
             }
 
             @Override
@@ -51,26 +54,13 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-//        APIRequestHandler.getInstance().request(URL.GET_LOGGED_IN_USER, Optional.empty(), Optional.empty(),
-//                LoginStatus.class, (statusCode, resp) -> {
-//
-//                    if (resp.status.equals("success") && !Objects.isNull(resp.userId)) {
-//                        sharedPreferencesManager.put(SharedPreferenceKey.USER_ID, resp.userId.toString());
-//                    } else {
-//                        sharedPreferencesManager.delete(SharedPreferenceKey.USER_ID);
-//                    }
-//                });
-//
-//        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                if (task.isSuccessful()) {
-//                    token.setText(task.getResult().getToken());
-//                } else {
-//                    token.setText("Error");
-//                }
-//            }
-//        });
+        apiRequestHandler.request(URL.GET_LOGGED_IN_USER, Optional.empty(), Optional.empty(), LoginStatus.class, (statusCode, resp) -> {
+            if (resp.status.equals("success") && !Objects.isNull(resp.userId)) {
+                sharedPreferencesManager.put(SharedPreferenceKey.USER_ID, resp.userId.toString());
+            } else {
+                sharedPreferencesManager.put(SharedPreferenceKey.USER_ID, null);
+            }
+        });
     }
 
 }

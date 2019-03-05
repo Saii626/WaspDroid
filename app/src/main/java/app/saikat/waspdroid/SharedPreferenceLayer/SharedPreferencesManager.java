@@ -15,7 +15,7 @@ public class SharedPreferencesManager {
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
     private SharedPreferences sharedPreferences;
 
-    SharedPreferencesManager(Application application) {
+    public SharedPreferencesManager(Application application) {
         this.sharedPreferences = application.getSharedPreferences("wasp-droid", Context.MODE_PRIVATE);
 
         this.listener = (preferences, keyChange) -> {

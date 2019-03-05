@@ -1,10 +1,8 @@
 package app.saikat.waspdroid.NetworkLayer;
 
 import android.os.Handler;
-import android.os.HandlerThread;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -21,7 +19,7 @@ public class APIRequestHandler{
     private Handler requesthandler;
     private Gson gson;
 
-    APIRequestHandler(OkHttpClient okHttpClient, Handler handler, Gson gson) {
+    public APIRequestHandler(OkHttpClient okHttpClient, Handler handler, Gson gson) {
         this.httpClient = okHttpClient;
         this.requesthandler = handler;
         this.gson = gson;

@@ -1,4 +1,4 @@
-package app.saikat.waspdroid.NetworkLayer;
+package app.saikat.waspdroid.DaggerComponents.ApplicationModules;
 
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import app.saikat.waspdroid.Application.ApplicationScope;
+import app.saikat.waspdroid.DaggerComponents.Scopes.ApplicationScope;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.ConnectionSpec;

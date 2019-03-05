@@ -2,10 +2,6 @@ package app.saikat.waspdroid.Fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
-import app.saikat.waspdroid.Models.Response.NotifyRegister;
-import app.saikat.waspdroid.NetworkLayer.APIRequestHandler;
-import app.saikat.waspdroid.NetworkLayer.URL;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import app.saikat.waspdroid.R;
-import app.saikat.waspdroid.SharedPreferenceLayer.SharedPreferenceKey;
-import app.saikat.waspdroid.SharedPreferenceLayer.SharedPreferencesManager;
 
 public class NotifyTab extends BaseFragment{
 
@@ -35,8 +22,6 @@ public class NotifyTab extends BaseFragment{
     private Spinner devices;
     private SharedPreferences sharedPreferences;
 
-
-    private static String TAG = NotifyTab.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle savedInstance) {

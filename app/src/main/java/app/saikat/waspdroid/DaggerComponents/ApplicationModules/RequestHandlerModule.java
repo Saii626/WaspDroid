@@ -1,10 +1,11 @@
-package app.saikat.waspdroid.NetworkLayer;
+package app.saikat.waspdroid.DaggerComponents.ApplicationModules;
 
 import android.os.Handler;
 
 import com.google.gson.Gson;
 
-import app.saikat.waspdroid.Application.ApplicationScope;
+import app.saikat.waspdroid.DaggerComponents.Scopes.ApplicationScope;
+import app.saikat.waspdroid.NetworkLayer.APIRequestHandler;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;

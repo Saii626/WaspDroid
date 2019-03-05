@@ -1,4 +1,4 @@
-package app.saikat.waspdroid.Activities;
+package app.saikat.waspdroid.DaggerComponents.ActivityModules;
 
 import dagger.Module;
 

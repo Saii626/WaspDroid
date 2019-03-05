@@ -15,4 +15,8 @@
     <string name="notification_title">Notification Title</string>
     <string name="notification_body">Notification Body</string>
     <string name="send_notification">Send Notification</string>
+    <string name="notify">Notify</string>
+    <string name="files">Files</string>
+    <string name="gpio">GPIO</string>
+    <string name="misc">Misc</string>
 </resources>

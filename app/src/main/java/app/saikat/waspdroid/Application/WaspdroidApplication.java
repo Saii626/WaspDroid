@@ -2,6 +2,10 @@ package app.saikat.waspdroid.Application;
 
 import android.app.Application;
 
+import app.saikat.waspdroid.DaggerComponents.ApplicationModules.ApplicationModule;
+import app.saikat.waspdroid.DaggerComponents.Components.AppComponent;
+import app.saikat.waspdroid.DaggerComponents.Components.DaggerAppComponent;
+
 
 public class WaspdroidApplication extends Application {
 
@@ -16,6 +20,7 @@ public class WaspdroidApplication extends Application {
         appComponent = DaggerAppComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
+
     }
 
     public AppComponent getAppComponent() {
@@ -25,4 +30,5 @@ public class WaspdroidApplication extends Application {
     public static WaspdroidApplication getInstance() {
         return WaspdroidApplication.waspdroidApplication;
     }
+
 }

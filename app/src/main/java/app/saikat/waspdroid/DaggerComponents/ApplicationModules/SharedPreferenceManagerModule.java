@@ -1,8 +1,9 @@
-package app.saikat.waspdroid.SharedPreferenceLayer;
+package app.saikat.waspdroid.DaggerComponents.ApplicationModules;
 
 import android.app.Application;
 
-import app.saikat.waspdroid.Application.ApplicationScope;
+import app.saikat.waspdroid.DaggerComponents.Scopes.ApplicationScope;
+import app.saikat.waspdroid.SharedPreferenceLayer.SharedPreferencesManager;
 import dagger.Module;
 import dagger.Provides;
 

@@ -1,83 +1,70 @@
 package app.saikat.waspdroid.Fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import app.saikat.waspdroid.Models.Response.Login;
-import app.saikat.waspdroid.NetworkLayer.APIRequestHandler;
 import app.saikat.waspdroid.NetworkLayer.BASE_URLs;
 import app.saikat.waspdroid.NetworkLayer.URL;
 import app.saikat.waspdroid.R;
 import app.saikat.waspdroid.SharedPreferenceLayer.SharedPreferenceKey;
-import app.saikat.waspdroid.SharedPreferenceLayer.SharedPreferencesManager;
+import butterknife.BindView;
+import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 
 public class LoginTab extends BaseFragment{
 
-    private EditText username, password;
-    private Button submit;
-    private ToggleButton toggleButton;
-
-    private SharedPreferences sharedPreferences;
-
-    private static String TAG = LoginTab.class.getSimpleName();
+    @BindView(R.id.username) EditText username;
+    @BindView(R.id.password) EditText password;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle savedInstance) {
-        return layoutInflater.inflate(R.layout.login_tab, viewGroup, false);
+        return this.inflateAndInjectDependencies(layoutInflater,viewGroup, savedInstance, R.layout.login_tab);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        username = view.findViewById(R.id.username);
-        password = view.findViewById(R.id.password);
-        submit = view.findViewById(R.id.login);
-        toggleButton = view.findViewById(R.id.toggleButton);
+    }
 
-//        sharedPreferences = SharedPreferencesManager.getSharedPreferences(this.getContext());
-        submit.setOnClickListener(v -> {
+    @OnCheckedChanged(R.id.toggleButton)
+    public void toggleBaseURL(boolean isChecked){
+        if (isChecked) {
+            URL.changeBaseUrl(BASE_URLs.REMOTE_URL);
+        } else {
+            URL.changeBaseUrl(BASE_URLs.LOCAL_URL);
+        }
 
-            Map<String, String> formData = new HashMap<>();
-            formData.put("username", username.getText().toString());
-            formData.put("password", password.getText().toString());
+        Toast.makeText(getContext(), URL.getBase_url().name(), Toast.LENGTH_SHORT).show();
+    }
 
-//            APIRequestHandler.getInstance().request(URL.LOGIN, Optional.empty(), Optional.of(formData),
-//                    Login.class, (statusCode, resp) -> {
-//
-//                if (resp.status.equals("success")) {
-//                    Toast.makeText(getContext(), String.format("Logged in with ID: %s", resp.userId), Toast.LENGTH_SHORT).show();
-////                    SharedPreferencesManager.put(sharedPreferences, SharedPreferenceKey.USER_ID, resp.userId);
-//                } else {
-//                    Toast.makeText(getContext(), "Log failed", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-        });
+    @OnClick(R.id.login)
+    public void login() {
+        Map<String, String> formData = new HashMap<>();
+        formData.put("username", username.getText().toString());
+        formData.put("password", password.getText().toString());
 
-        toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                URL.changeBaseUrl(BASE_URLs.REMOTE_URL);
+        apiRequestHandler.request(URL.LOGIN, Optional.empty(), Optional.of(formData), Login.class, (statusCode, resp) -> {
+
+            if (resp.status.equals("success")) {
+                Toast.makeText(getContext(), String.format("Logged in with ID: %s", resp.userId), Toast.LENGTH_SHORT).show();
+                sharedPreferencesManager.put(SharedPreferenceKey.USER_ID, resp.userId);
             } else {
-                URL.changeBaseUrl(BASE_URLs.LOCAL_URL);
+                Toast.makeText(getContext(), "Log failed", Toast.LENGTH_SHORT).show();
             }
-
-            Toast.makeText(getContext(), URL.getBase_url().name(), Toast.LENGTH_SHORT).show();
         });
-
     }
 
     @Override
